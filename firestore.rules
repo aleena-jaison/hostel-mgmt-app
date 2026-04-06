@@ -43,6 +43,13 @@ service cloud.firestore {
       allow create, update, delete: if isWarden();
     }
 
+    // SOS Alerts
+    match /sosAlerts/{alertId} {
+      allow read: if request.auth != null && (resource.data.studentId == request.auth.uid || isWarden());
+      allow create: if request.auth != null && request.resource.data.studentId == request.auth.uid;
+      allow update: if isWarden();
+    }
+
     // Config
     match /config/{document} {
       allow read: if request.auth != null;

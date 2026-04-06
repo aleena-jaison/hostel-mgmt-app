@@ -55,6 +55,12 @@ class AdminHomeScreen extends ConsumerWidget {
                       stream: _totalStudentsStream,
                       color: Colors.blue,
                     ),
+                    _SummaryCard(
+                      icon: Icons.emergency,
+                      label: 'Active SOS',
+                      stream: _activeSosStream,
+                      color: Colors.red,
+                    ),
                   ],
                 );
               },
@@ -99,6 +105,13 @@ Stream<QuerySnapshot> _totalStudentsStream() {
   return FirebaseFirestore.instance
       .collection('users')
       .where('role', isEqualTo: 'student')
+      .snapshots();
+}
+
+Stream<QuerySnapshot> _activeSosStream() {
+  return FirebaseFirestore.instance
+      .collection('sosAlerts')
+      .where('status', isEqualTo: 'active')
       .snapshots();
 }
 

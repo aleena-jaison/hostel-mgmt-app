@@ -20,6 +20,7 @@ import 'package:hostel_manager/features/announcements/screens/announcement_manag
 import 'package:hostel_manager/features/geofencing/screens/tracking_log_screen.dart';
 import 'package:hostel_manager/features/attendance/screens/attendance_screen.dart';
 import 'package:hostel_manager/features/attendance/screens/attendance_manage_screen.dart';
+import 'package:hostel_manager/features/sos/screens/sos_manage_screen.dart';
 
 // ---------------------------------------------------------------------------
 // Router provider
@@ -159,6 +160,14 @@ final routerProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: '/admin/tracking',
                 builder: (_, _) => const TrackingLogScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/admin/sos',
+                builder: (_, _) => const SosManageScreen(),
               ),
             ],
           ),
