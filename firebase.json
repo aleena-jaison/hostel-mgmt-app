@@ -1,0 +1,56 @@
+{
+  "emulators": {
+    "dataconnect": {
+      "dataDir": "dataconnect/.dataconnect/pgliteData"
+    }
+  },
+  "dataconnect": {
+    "source": "dataconnect"
+  },
+  "firestore": {
+    "database": "(default)",
+    "location": "asia-east1",
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "storage": {
+    "rules": "storage.rules"
+  },
+  "database": {
+    "rules": "database.rules.json"
+  },
+  "auth": {
+    "providers": {
+      "emailPassword": true
+    }
+  },
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "hostel-manager-d0123a",
+          "appId": "1:845339002655:android:2fae04e1bf53759075d22a",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "hostel-manager-d0123a",
+          "appId": "1:845339002655:ios:fbc4d2c07aa801b875d22a",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "hostel-manager-d0123a",
+          "configurations": {
+            "android": "1:845339002655:android:2fae04e1bf53759075d22a",
+            "ios": "1:845339002655:ios:fbc4d2c07aa801b875d22a",
+            "web": "1:845339002655:web:158a0dc06f8a4eba75d22a"
+          }
+        }
+      }
+    }
+  }
+}

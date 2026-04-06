@@ -1,0 +1,51 @@
+type User @table {
+  username: String!
+  passwordHash: String!
+  role: String!
+  createdAt: Timestamp!
+  firstName: String
+  lastName: String
+  email: String
+  phoneNumber: String
+  hostelRoomNumber: String
+}
+
+type Student @table {
+  user: User!
+  enrollmentNumber: String!
+  hostelBlock: String!
+  course: String
+  yearOfStudy: Int
+}
+
+type LeaveRequest @table {
+  student: Student!
+  startDate: Date!
+  endDate: Date!
+  reason: String!
+  status: String!
+  createdAt: Timestamp!
+  destination: String
+  wardenApproval: User
+  wardenRejectionReason: String
+}
+
+type GatePassRequest @table {
+  student: Student!
+  exitTime: Timestamp!
+  expectedReturnTime: Timestamp!
+  reason: String!
+  status: String!
+  createdAt: Timestamp!
+  wardenApproval: User
+  wardenRejectionReason: String
+}
+
+type CheckInOutLog @table {
+  student: Student!
+  timestamp: Timestamp!
+  type: String!
+  associatedLeaveRequest: LeaveRequest
+  associatedGatePassRequest: GatePassRequest
+  checkedOutByWarden: Boolean
+}

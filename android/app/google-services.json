@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "845339002655",
+    "firebase_url": "https://hostel-manager-d0123a-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "hostel-manager-d0123a",
+    "storage_bucket": "hostel-manager-d0123a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:845339002655:android:2fae04e1bf53759075d22a",
+        "android_client_info": {
+          "package_name": "com.example.hostel_manager"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeEYq4Gr_kjxqi2N4aG7FQs-AeTabUsTw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

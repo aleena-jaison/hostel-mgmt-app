@@ -1,0 +1,85 @@
+mutation CreateDemoData @transaction @auth(level: USER, insecureReason: "This operation is for seeding data and should only be run by authenticated users for development purposes.") {
+  user_insertMany(data: [
+    {
+      id: "a1a1a1a1-b2b2-c3c3-d4d4-e5e5e5e5e5e5",
+      username: "adminuser",
+      passwordHash: "hashedpassword1",
+      role: "admin",
+      createdAt: "2023-01-01T10:00:00Z",
+      firstName: "Admin",
+      lastName: "User",
+      email: "admin@example.com",
+      phoneNumber: "1234567890",
+      hostelRoomNumber: "A101"
+    },
+    {
+      id: "b2b2b2b2-c3c3-d4d4-e5e5-f6f6f6f6f6f6",
+      username: "studentuser",
+      passwordHash: "hashedpassword2",
+      role: "student",
+      createdAt: "2023-01-01T10:05:00Z",
+      firstName: "Student",
+      lastName: "User",
+      email: "student@example.com",
+      phoneNumber: "0987654321",
+      hostelRoomNumber: "B202"
+    },
+    {
+      id: "c3c3c3c3-d4d4-e5e5-f6f6-g7g7g7g7g7g7",
+      username: "wardenuser",
+      passwordHash: "hashedpassword3",
+      role: "warden",
+      createdAt: "2023-01-01T10:10:00Z",
+      firstName: "Warden",
+      lastName: "User",
+      email: "warden@example.com",
+      phoneNumber: "1122334455",
+      hostelRoomNumber: "C303"
+    }
+  ])
+  student_insertMany(data: [
+    {
+      id: "s1s1s1s1-t2t2-u3u3-v4v4-w5w5w5w5w5w5",
+      userId: "b2b2b2b2-c3c3-d4d4-e5e5-f6f6f6f6f6f6",
+      enrollmentNumber: "STU12345",
+      hostelBlock: "Block B",
+      course: "Computer Science",
+      yearOfStudy: 3
+    }
+  ])
+  leaveRequest_insertMany(data: [
+    {
+      id: "lr1lr1lr1-lr2lr2-lr3lr3-lr4lr4-lr5lr5lr5lr5lr5",
+      studentId: "s1s1s1s1-t2t2-u3u3-v4v4-w5w5w5w5w5w5",
+      startDate: "2023-10-26",
+      endDate: "2023-10-28",
+      reason: "Family event",
+      status: "Pending",
+      createdAt: "2023-10-25T14:30:00Z",
+      destination: "Hometown",
+      wardenApprovalId: "c3c3c3c3-d4d4-e5e5-f6f6-g7g7g7g7g7g7"
+    }
+  ])
+  gatePassRequest_insertMany(data: [
+    {
+      id: "gp1gp1gp1-gp2gp2-gp3gp3-gp4gp4-gp5gp5gp5gp5gp5",
+      studentId: "s1s1s1s1-t2t2-u3u3-v4v4-w5w5w5w5w5w5",
+      exitTime: "2023-10-26T18:00:00Z",
+      expectedReturnTime: "2023-10-26T22:00:00Z",
+      reason: "Visit local market",
+      status: "Approved",
+      createdAt: "2023-10-26T17:00:00Z",
+      wardenApprovalId: "c3c3c3c3-d4d4-e5e5-f6f6-g7g7g7g7g7g7"
+    }
+  ])
+  checkInOutLog_insertMany(data: [
+    {
+      id: "ci1ci1ci1-ci2ci2-ci3ci3-ci4ci4-ci5ci5ci5ci5ci5",
+      studentId: "s1s1s1s1-t2t2-u3u3-v4v4-w5w5w5w5w5w5",
+      timestamp: "2023-10-26T18:05:00Z",
+      type: "Checked Out",
+      associatedGatePassRequestId: "gp1gp1gp1-gp2gp2-gp3gp3-gp4gp4-gp5gp5gp5gp5gp5",
+      checkedOutByWarden: true
+    }
+  ])
+}

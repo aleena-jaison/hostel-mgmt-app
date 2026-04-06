@@ -1,0 +1,58 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Users collection
+    match /users/{userId} {
+      allow read: if request.auth != null && (request.auth.uid == userId || isWarden());
+      allow create: if isWarden();
+      allow update: if request.auth != null && request.auth.uid == userId
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['faceEmbedding', 'profileImageUrl']);
+      allow update: if isWarden();
+    }
+
+    // Leave requests
+    match /leaveRequests/{requestId} {
+      allow read: if request.auth != null && (resource.data.studentId == request.auth.uid || isWarden());
+      allow create: if request.auth != null && request.resource.data.studentId == request.auth.uid;
+      allow update: if isWarden();
+    }
+
+    // Gate passes
+    match /gatePasses/{passId} {
+      allow read: if request.auth != null && (resource.data.studentId == request.auth.uid || isWarden());
+      allow create: if request.auth != null;
+      allow update: if isWarden();
+    }
+
+    // Location check-ins
+    match /locationCheckins/{checkinId} {
+      allow read: if isWarden();
+      allow create: if request.auth != null && request.resource.data.studentId == request.auth.uid;
+    }
+
+    // Attendance
+    match /attendance/{recordId} {
+      allow read: if request.auth != null && (resource.data.studentId == request.auth.uid || isWarden());
+      allow create: if request.auth != null && request.resource.data.studentId == request.auth.uid;
+    }
+
+    // Announcements
+    match /announcements/{announcementId} {
+      allow read: if request.auth != null;
+      allow create, update, delete: if isWarden();
+    }
+
+    // Config
+    match /config/{document} {
+      allow read: if request.auth != null;
+      allow write: if isWarden();
+    }
+
+    // Helper function to check if user is a warden
+    function isWarden() {
+      return request.auth != null
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'warden';
+    }
+  }
+}

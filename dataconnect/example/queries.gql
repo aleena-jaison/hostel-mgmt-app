@@ -1,0 +1,36 @@
+query ListAllInstances @auth(level: USER, insecureReason: "This operation is safe to expose to all logged in users.") {
+  instances {
+    id
+    name
+    status
+    type
+    location
+    ipAddress
+    notes
+  }
+}
+
+mutation CreateInstance($name: String!, $status: String!, $type: String!, $location: String!, $ipAddress: String!) @auth(level: USER, insecureReason: "This operation is safe to expose to all logged in users.") {
+  instance_insert(data: {
+    name: $name,
+    status: $status,
+    type: $type,
+    location: $location,
+    ipAddress: $ipAddress
+  })
+}
+
+mutation UpdateInstance($id: ID!, $name: String, $status: String, $type: String, $location: String, $ipAddress: String, $notes: String) @auth(level: USER, insecureReason: "This operation is safe to expose to all logged in users.") {
+  instance_update(key: { id: $id }, data: {
+    name: $name,
+    status: $status,
+    type: $type,
+    location: $location,
+    ipAddress: $ipAddress,
+    notes: $notes
+  })
+}
+
+mutation DeleteInstance($id: ID!) @auth(level: USER, insecureReason: "This operation is safe to expose to all logged in users.") {
+  instance_delete(key: { id: $id })
+}
