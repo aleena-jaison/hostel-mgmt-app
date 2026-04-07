@@ -107,35 +107,38 @@ class _AttendanceSummary extends ConsumerWidget {
 
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          child: Row(
-            children: [
-              _SummaryChip(
-                  label: 'Present', count: present, color: Colors.green),
-              const SizedBox(width: 12),
-              _SummaryChip(
-                  label: 'On Leave', count: onLeave, color: Colors.blue),
-              const SizedBox(width: 12),
-              _SummaryChip(
-                  label: 'Total Marked', count: total, color: Colors.grey),
-              const Spacer(),
-              // Count of students who haven't marked
-              StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection('users')
-                    .where('role', isEqualTo: 'student')
-                    .snapshots(),
-                builder: (context, snap) {
-                  if (!snap.hasData) return const SizedBox.shrink();
-                  final totalStudents = snap.data!.docs.length;
-                  final absent = totalStudents - total;
-                  return _SummaryChip(
-                    label: 'Absent',
-                    count: absent < 0 ? 0 : absent,
-                    color: Colors.red,
-                  );
-                },
-              ),
-            ],
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                _SummaryChip(
+                    label: 'Present', count: present, color: Colors.green),
+                const SizedBox(width: 12),
+                _SummaryChip(
+                    label: 'On Leave', count: onLeave, color: Colors.blue),
+                const SizedBox(width: 12),
+                _SummaryChip(
+                    label: 'Total Marked', count: total, color: Colors.grey),
+                const SizedBox(width: 12),
+                // Count of students who haven't marked
+                StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection('users')
+                      .where('role', isEqualTo: 'student')
+                      .snapshots(),
+                  builder: (context, snap) {
+                    if (!snap.hasData) return const SizedBox.shrink();
+                    final totalStudents = snap.data!.docs.length;
+                    final absent = totalStudents - total;
+                    return _SummaryChip(
+                      label: 'Absent',
+                      count: absent < 0 ? 0 : absent,
+                      color: Colors.red,
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         );
       },

@@ -21,8 +21,10 @@ class GatePassService {
         .where('studentId', isEqualTo: studentId)
         .orderBy('createdAt', descending: true)
         .snapshots()
-        .map((snapshot) =>
-            snapshot.docs.map((doc) => GatePass.fromFirestore(doc)).toList());
+        .map(
+          (snapshot) =>
+              snapshot.docs.map((doc) => GatePass.fromFirestore(doc)).toList(),
+        );
   }
 
   /// Returns a stream of all gate passes, optionally filtered by status.
@@ -31,8 +33,10 @@ class GatePassService {
     if (status != null) {
       query = query.where('status', isEqualTo: status.name);
     }
-    return query.snapshots().map((snapshot) =>
-        snapshot.docs.map((doc) => GatePass.fromFirestore(doc)).toList());
+    return query.snapshots().map(
+      (snapshot) =>
+          snapshot.docs.map((doc) => GatePass.fromFirestore(doc)).toList(),
+    );
   }
 
   /// Approves a gate pass by setting its status to active and generating
@@ -53,8 +57,10 @@ class GatePassService {
   /// Looks up a gate pass by its QR code data. Returns the pass if found,
   /// or null otherwise.
   Future<GatePass?> scanGatePass(String qrData) async {
-    final snapshot =
-        await _passesRef.where('qrCodeData', isEqualTo: qrData).limit(1).get();
+    final snapshot = await _passesRef
+        .where('qrCodeData', isEqualTo: qrData)
+        .limit(1)
+        .get();
     if (snapshot.docs.isEmpty) return null;
     return GatePass.fromFirestore(snapshot.docs.first);
   }
@@ -79,10 +85,10 @@ class GatePassService {
   Future<bool> hasActivePass(String studentId) async {
     final snapshot = await _passesRef
         .where('studentId', isEqualTo: studentId)
-        .where('status', whereIn: [
-          GatePassStatus.active.name,
-          GatePassStatus.usedOut.name,
-        ])
+        .where(
+          'status',
+          whereIn: [GatePassStatus.active.name, GatePassStatus.usedOut.name],
+        )
         .limit(1)
         .get();
     return snapshot.docs.isNotEmpty;

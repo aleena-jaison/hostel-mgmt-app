@@ -76,7 +76,15 @@ class _QrScanScreenState extends ConsumerState<QrScanScreen> {
         return;
       }
 
-      if (pass.status == GatePassStatus.active) {
+      if (pass.status == GatePassStatus.active &&
+          DateTime.now().difference(pass.expectedOut).inHours >= 3) {
+        _showResultDialog(
+          title: 'Expired Pass',
+          message:
+              '${pass.studentName}\'s pass has expired — they did not check out before the expected time.',
+          isError: true,
+        );
+      } else if (pass.status == GatePassStatus.active) {
         _showPassActionDialog(pass: pass, isCheckOut: true);
       } else if (pass.status == GatePassStatus.usedOut) {
         _showPassActionDialog(pass: pass, isCheckOut: false);

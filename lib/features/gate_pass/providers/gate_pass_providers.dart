@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hostel_manager/core/constants/enums.dart';
 import 'package:hostel_manager/features/gate_pass/models/gate_pass.dart';
 import 'package:hostel_manager/features/gate_pass/services/gate_pass_service.dart';
+import 'package:hostel_manager/features/gate_pass/services/gate_pass_location_service.dart';
 
 /// Provides a singleton instance of [GatePassService].
 final gatePassServiceProvider = Provider<GatePassService>((ref) {
@@ -29,4 +30,17 @@ final activePassesProvider = StreamProvider<List<GatePass>>((ref) {
           p.status == GatePassStatus.active ||
           p.status == GatePassStatus.usedOut)
       .toList());
+});
+
+/// Provides a singleton instance of [GatePassLocationService].
+final gatePassLocationServiceProvider =
+    Provider<GatePassLocationService>((ref) {
+  return GatePassLocationService();
+});
+
+/// Streams all active gate pass locations for the warden map view.
+final activeGatePassLocationsProvider =
+    StreamProvider<List<StudentGatePassLocation>>((ref) {
+  final service = ref.watch(gatePassLocationServiceProvider);
+  return service.getActiveGatePassLocations();
 });

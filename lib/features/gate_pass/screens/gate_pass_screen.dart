@@ -25,6 +25,7 @@ class GatePassScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('My Gate Passes')),
       floatingActionButton: FloatingActionButton(
+        heroTag: 'gate_pass_add',
         onPressed: () => _showRequestSheet(context, ref, currentUser.id, currentUser.name),
         child: const Icon(Icons.add),
       ),
@@ -123,6 +124,14 @@ class GatePassScreen extends ConsumerWidget {
                         );
                         return;
                       }
+                      if (expectedIn!.isBefore(expectedOut!)) {
+                        ScaffoldMessenger.of(ctx).showSnackBar(
+                          const SnackBar(
+                              content: Text(
+                                  'Expected in time must be after expected out time')),
+                        );
+                        return;
+                      }
                       final pass = GatePass(
                         id: const Uuid().v4(),
                         studentId: studentId,
@@ -174,6 +183,10 @@ class _PassCard extends StatelessWidget {
   final GatePass pass;
   const _PassCard({required this.pass});
 
+  bool get _isExpiredActive =>
+      pass.status == GatePassStatus.active &&
+      DateTime.now().difference(pass.expectedOut).inHours >= 3;
+
   @override
   Widget build(BuildContext context) {
     final dateFormat = DateFormat('MMM dd, hh:mm a');
@@ -192,13 +205,25 @@ class _PassCard extends StatelessWidget {
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                 ),
-                _StatusBadge(status: pass.status),
+                _isExpiredActive
+                    ? const _StatusBadge(status: GatePassStatus.expired)
+                    : _StatusBadge(status: pass.status),
               ],
             ),
             const SizedBox(height: 8),
             Text('Out: ${dateFormat.format(pass.expectedOut)}'),
             Text('In: ${dateFormat.format(pass.expectedIn)}'),
-            if (pass.status == GatePassStatus.active) ...[
+            if (pass.status == GatePassStatus.active &&
+                DateTime.now().difference(pass.expectedOut).inHours >= 3) ...[
+              const SizedBox(height: 12),
+              Text(
+                'Expired — not checked out before expected time',
+                style: TextStyle(
+                  color: Colors.red.shade700,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ] else if (pass.status == GatePassStatus.active) ...[
               const SizedBox(height: 12),
               SizedBox(
                 width: double.infinity,
@@ -211,7 +236,23 @@ class _PassCard extends StatelessWidget {
                     );
                   },
                   icon: const Icon(Icons.qr_code),
-                  label: const Text('Show QR'),
+                  label: const Text('Check Out QR'),
+                ),
+              ),
+            ] else if (pass.status == GatePassStatus.usedOut) ...[
+              const SizedBox(height: 12),
+              SizedBox(
+                width: double.infinity,
+                child: FilledButton.icon(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => QrDisplayScreen(pass: pass),
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.qr_code),
+                  label: const Text('Check In QR'),
                 ),
               ),
             ],

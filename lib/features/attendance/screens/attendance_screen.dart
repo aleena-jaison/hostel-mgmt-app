@@ -66,8 +66,13 @@ class _AttendanceScreenState extends ConsumerState<AttendanceScreen> {
     final minute = int.parse(parts[1]);
 
     final start = TimeOfDay(hour: hour, minute: minute);
-    final endDt = DateTime(2000, 1, 1, hour, minute)
-        .add(Duration(minutes: windowMinutes));
+    final endDt = DateTime(
+      2000,
+      1,
+      1,
+      hour,
+      minute,
+    ).add(Duration(minutes: windowMinutes));
     final end = TimeOfDay(hour: endDt.hour, minute: endDt.minute);
 
     return '${start.format(context)} – ${end.format(context)}';
@@ -170,8 +175,11 @@ class _AttendanceScreenState extends ConsumerState<AttendanceScreen> {
       // Step 5: Upload photo and mark attendance
       setState(() => _statusMessage = 'Uploading photo...');
       final photoBytes = await image.readAsBytes();
-      final photoUrl =
-          await service.uploadAttendancePhoto(user.id, today, photoBytes);
+      final photoUrl = await service.uploadAttendancePhoto(
+        user.id,
+        today,
+        photoBytes,
+      );
 
       await service.markPresent(
         studentId: user.id,
@@ -234,8 +242,7 @@ class _AttendanceScreenState extends ConsumerState<AttendanceScreen> {
                 _buildStatusIcon(theme),
                 const SizedBox(height: 24),
 
-                Text('Daily Attendance',
-                    style: theme.textTheme.headlineSmall),
+                Text('Daily Attendance', style: theme.textTheme.headlineSmall),
                 const SizedBox(height: 8),
                 Text(
                   DateFormat('EEEE, dd MMM yyyy').format(DateTime.now()),
@@ -263,7 +270,6 @@ class _AttendanceScreenState extends ConsumerState<AttendanceScreen> {
                 if (_todayRecord != null) ...[
                   _buildAttendanceCard(theme),
                 ]
-
                 // Not yet marked
                 else ...[
                   if (!withinWindow) ...[
@@ -279,13 +285,14 @@ class _AttendanceScreenState extends ConsumerState<AttendanceScreen> {
                         _statusMessage,
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: _statusMessage.contains('failed') ||
+                          color:
+                              _statusMessage.contains('failed') ||
                                   _statusMessage.contains('not inside') ||
                                   _statusMessage.contains('Error')
                               ? Colors.red
                               : _statusMessage.contains('success')
-                                  ? Colors.green
-                                  : null,
+                              ? Colors.green
+                              : null,
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -299,7 +306,9 @@ class _AttendanceScreenState extends ConsumerState<AttendanceScreen> {
                         label: const Text('Mark Attendance'),
                         style: FilledButton.styleFrom(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 32, vertical: 16),
+                            horizontal: 32,
+                            vertical: 16,
+                          ),
                         ),
                       ),
                   ],
@@ -319,18 +328,18 @@ class _AttendanceScreenState extends ConsumerState<AttendanceScreen> {
         status == AttendanceStatus.present
             ? Icons.check_circle
             : status == AttendanceStatus.onLeave
-                ? Icons.flight_takeoff
-                : Icons.cancel,
+            ? Icons.flight_takeoff
+            : Icons.cancel,
         size: 80,
         color: status == AttendanceStatus.present
             ? Colors.green
             : status == AttendanceStatus.onLeave
-                ? Colors.blue
-                : Colors.red,
+            ? Colors.blue
+            : Colors.red,
       );
     }
     return Icon(
-      Icons.fingerprint,
+      Icons.face_2_outlined,
       size: 80,
       color: theme.colorScheme.primary,
     );
@@ -349,8 +358,8 @@ class _AttendanceScreenState extends ConsumerState<AttendanceScreen> {
                 color: record.status == AttendanceStatus.present
                     ? Colors.green
                     : record.status == AttendanceStatus.onLeave
-                        ? Colors.blue
-                        : Colors.red,
+                    ? Colors.blue
+                    : Colors.red,
                 fontWeight: FontWeight.bold,
               ),
             ),

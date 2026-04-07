@@ -10,8 +10,9 @@ import 'package:hostel_manager/features/admin/screens/admin_home_screen.dart';
 import 'package:hostel_manager/features/admin/screens/settings_screen.dart';
 import 'package:hostel_manager/features/admin/screens/student_roster.dart';
 import 'package:hostel_manager/features/leave/screens/leave_list_screen.dart';
-
+import 'package:hostel_manager/features/leave/screens/leave_form_screen.dart';
 import 'package:hostel_manager/features/leave/screens/leave_manage_screen.dart';
+import 'package:hostel_manager/features/auth/screens/student_profile_screen.dart';
 import 'package:hostel_manager/features/gate_pass/screens/gate_pass_screen.dart';
 import 'package:hostel_manager/features/gate_pass/screens/gate_pass_manage_screen.dart';
 
@@ -21,6 +22,7 @@ import 'package:hostel_manager/features/geofencing/screens/tracking_log_screen.d
 import 'package:hostel_manager/features/attendance/screens/attendance_screen.dart';
 import 'package:hostel_manager/features/attendance/screens/attendance_manage_screen.dart';
 import 'package:hostel_manager/features/sos/screens/sos_manage_screen.dart';
+import 'package:hostel_manager/features/gate_pass/screens/gate_pass_tracking_map_screen.dart';
 
 // ---------------------------------------------------------------------------
 // Router provider
@@ -68,6 +70,16 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/login',
         builder: (_, _) => const LoginScreen(),
+      ),
+
+      // Full-screen student pages (pushed on top of the shell)
+      GoRoute(
+        path: '/apply-leave',
+        builder: (_, _) => const LeaveFormScreen(),
+      ),
+      GoRoute(
+        path: '/profile',
+        builder: (_, _) => const StudentProfileScreen(),
       ),
 
       // Student shell route with bottom navigation
@@ -160,6 +172,14 @@ final routerProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: '/admin/tracking',
                 builder: (_, _) => const TrackingLogScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/admin/gate-pass-tracking',
+                builder: (_, _) => const GatePassTrackingMapScreen(),
               ),
             ],
           ),
