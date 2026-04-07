@@ -9,6 +9,14 @@ service firebase.storage {
         && request.resource.contentType.matches('image/.*');
     }
 
+    // Profile images
+    match /profileImages/{fileName} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null
+        && request.resource.size < 5 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+    }
+
     // Attendance selfie photos
     match /attendance/{date}/{fileName} {
       allow read: if request.auth != null;

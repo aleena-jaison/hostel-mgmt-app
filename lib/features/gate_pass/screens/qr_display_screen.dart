@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:hostel_manager/core/constants/enums.dart';
 import 'package:hostel_manager/features/gate_pass/models/gate_pass.dart';
 
 class QrDisplayScreen extends ConsumerWidget {
@@ -11,12 +12,15 @@ class QrDisplayScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dateFormat = DateFormat('MMM dd, yyyy  hh:mm a');
+    final title = pass.status == GatePassStatus.usedOut
+        ? 'Check In QR Code'
+        : 'Check Out QR Code';
 
     // TODO: Set screen brightness to max using a plugin like screen_brightness
     // to make it easier for the scanner to read the QR code.
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Gate Pass QR')),
+      appBar: AppBar(title: Text(title)),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
         child: Column(
@@ -29,7 +33,9 @@ class QrDisplayScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 4),
             Text(
-              'Gate Pass',
+              pass.status == GatePassStatus.usedOut
+                  ? 'Check In Pass'
+                  : 'Check Out Pass',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: Colors.grey.shade600,
                   ),

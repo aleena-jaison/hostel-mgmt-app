@@ -6,7 +6,7 @@ import 'package:hostel_manager/core/constants/enums.dart';
 import 'package:hostel_manager/features/auth/providers/auth_providers.dart';
 import 'package:hostel_manager/features/leave/models/leave_request.dart';
 import 'package:hostel_manager/features/leave/providers/leave_providers.dart';
-import 'package:hostel_manager/features/leave/screens/leave_form_screen.dart';
+import 'package:go_router/go_router.dart';
 
 class LeaveListScreen extends ConsumerWidget {
   const LeaveListScreen({super.key});
@@ -38,11 +38,8 @@ class LeaveListScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('My Leaves')),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (_) => const LeaveFormScreen()),
-          );
-        },
+        heroTag: 'leave_list_add',
+        onPressed: () => context.push('/apply-leave'),
         child: const Icon(Icons.add),
       ),
       body: leavesAsync.when(
